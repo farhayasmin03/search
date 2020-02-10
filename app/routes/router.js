@@ -1,8 +1,11 @@
 const express = require('express');
+var dbController = require('../controller/controller')
 const router = express.Router();
 const bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 const jsonParser = bodyParser.json();
 var fs = require('fs');
+const csvtojson = require("csvtojson");
 var path = require("path");
 var multer = require('multer');
 var storage = multer.diskStorage({
@@ -33,10 +36,12 @@ router.post('/upload', function (req, res) {
 });
 
 router.get('/search', function (req, res) {
-    var serchText = rex.query.text
+    var serchText = req.query.text
 
-    fs.readFile('./upload/name-1580714534658.csv', function (err, data) {
+    fs.readFile('./upload/name-1580840155009.csv', 'utf8', function (err, data) {
         if (err) throw err;
+
+
 
         var serchData = data.indexOf(serchText) > -1 ? "has string" : "does not have string"
         res.status(200).json({
@@ -49,6 +54,7 @@ router.get('/search', function (req, res) {
 
 })
 
+router.get('/importData',dbController.import)
 
 
 

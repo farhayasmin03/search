@@ -13,6 +13,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 app.use('/api', routes);
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/fileUpload')
+var db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', function () {
+    console.log('mongoDB connected!!')
+});
 
 // define a simple route
 app.get('/', function (req, res) {
